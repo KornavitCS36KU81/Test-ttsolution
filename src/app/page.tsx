@@ -4,14 +4,13 @@ import Card from "@/components/card";
 import SearchBar  from "@/components/searchBar";
 import Button from "@/components/button";
 import { useState, useEffect } from "react";
-import { todo } from "@/types/todo";
+import { TodoType, AddType } from "@/types/todo";
 
 export default function Home() {
   
-  const [tasks, setTasks] = useState<todo[]>([])
+  const [tasks, setTasks] = useState<TodoType[]>([])
 
   const toggleTodo = (id: number) => {
-    console.log(tasks)
     setTasks(tasks =>
       tasks.map(todo =>
         todo.id === id
@@ -21,10 +20,24 @@ export default function Home() {
     )
   }
 
+  const addTodo = (task: AddType) => {
+    setTasks((oldTask) => {
+      return [...oldTask, 
+        {
+          id: oldTask[oldTask.length - 1].id + 1,
+          title: task.title,
+          description: task.description,
+          time: new Date(),
+          finish: false
+        }
+      ]
+    });
+  }
+
   useEffect(() => {
     fetch("/api/todo")
       .then(response => response.json())
-      .then((result: todo[]) => {
+      .then((result: TodoType[]) => {
         setTasks(result);
       });
   }, []);
@@ -36,7 +49,7 @@ export default function Home() {
         <div className="flex">
           <SearchBar />
         </div>
-        <Button />
+        <Button addTask={(task: AddType) => addTodo(task)} />
       </section>
       <section className="flex flex-col space-y-4">
         {

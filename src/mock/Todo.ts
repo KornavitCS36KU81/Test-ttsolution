@@ -1,6 +1,6 @@
-import { todo } from "@/types/todo";
+import { TodoType } from "@/types/todo";
 
-export const todos : todo[] = [
+export const todos : TodoType[] = [
   {
     id: 1,
     title: "Learn Next.js",
