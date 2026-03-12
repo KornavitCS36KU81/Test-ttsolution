@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { TodoProvider } from "@/context/TodoProvider"
 
 export const metadata: Metadata = {
   title: "homework TTsolution",
@@ -13,9 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="m-8 bg-gray-100">
-        {children}
-      </body>
+      <TodoProvider>
+        <body className="m-8 bg-gray-100">
+          {children}
+        </body>
+      </TodoProvider>
     </html>
   );
 }

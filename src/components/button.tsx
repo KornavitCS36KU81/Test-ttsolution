@@ -1,22 +1,24 @@
+import { useContext } from "react";
+import { TodoContext } from "@/context/TodoContext"
+
 import Dialog from "@/components/dialog";
 import { useForm } from "react-hook-form";
-import { AddType } from "@/types/todo";
+import { ChangeType } from "@/types/todo";
 
-type Action = {
-    addTask: (value: AddType) => void
-}
+export default function Button() {
+    const context = useContext(TodoContext);
+    const props = context;
 
-export default function Button({ addTask }: Action) {
-    const { register, handleSubmit, reset } = useForm<AddType>();
+    const { register, handleSubmit, reset } = useForm<ChangeType>();
 
-    const onSubmit = (data: AddType) => {
-        addTask(data)
+    const onSubmit = (data: ChangeType) => {
+        props?.addTodo(data)
         reset();
     };
 
     return (
         <Dialog
-            className="w-full md:w-fit text-center px-2 py-2 md:py-auto items-center text-sm font-medium rounded-lg bg-black text-white"
+            className="flex w-full md:w-fit px-2 py-2 md:py-auto items-center justify-center text-sm font-medium rounded-lg bg-black text-white"
             content={
                 <>
                     <label className="block mb-2.5 text-xl font-bold">ชื่อหัวข้อ</label>
@@ -35,9 +37,7 @@ export default function Button({ addTask }: Action) {
                 name: "บันทึก",
                 action: handleSubmit(onSubmit)
             }}
-            cannel={{
-                name: "ยกเลิก"
-            }}
+            cannel="ยกเลิก"
         >
             เพิ่มงาน
         </Dialog>

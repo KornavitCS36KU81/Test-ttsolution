@@ -6,7 +6,7 @@ export type TodoType = {
     finish: boolean
 }
 
-export type AddType = {
+export type ChangeType = {
     title: string
     description: string
 }

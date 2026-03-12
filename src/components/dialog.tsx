@@ -1,15 +1,15 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect, ReactNode, BaseSyntheticEvent } from "react";
 
 type ActionButton = {
     name: string;
-    action?: () => void;
+    action: (e?: BaseSyntheticEvent) => Promise<void>;
 }
 
 type DialogComponent = {
     content: ReactNode;
     children: ReactNode;
     className?: string;
-    cannel: ActionButton;
+    cannel: string;
     submit: ActionButton;
 }
 
@@ -28,22 +28,20 @@ export default function Dialog({children, ...props}:DialogComponent) {
         }
     }, [open]);
 
-    function handleSubmit() {
-        if (props.submit.action != undefined || props.submit.action != null) {
-            props.submit.action()
-        }
+    const handleFormSubmit = async (event: BaseSyntheticEvent) => {
+        await props.submit.action(event)
+        setOpen(false)
     }
 
     return (
         <>
-        <div className={`${props.className}`} onClick={() => setOpen(true)}>{children}</div>
+        <div className={`cursor-pointer ${props.className}`} onClick={() => setOpen(true)}>{children}</div>
         
         {/* Dialog */}
         {open && (
             <div className="z-10 fixed inset-0 flex items-center justify-center">
                 {/* Overlay */}
                 <div
-                    onClick={() => setOpen(false)}
                     className={`fixed inset-0 bg-black/50 transition-opacity duration-300 ${
                         show ? "opacity-100" : "opacity-0"
                     }`}
@@ -54,28 +52,19 @@ export default function Dialog({children, ...props}:DialogComponent) {
                     className={`relative bg-white rounded-xl shadow-lg w-100 p-6 transform transition-all duration-300
                     ${show ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
                 >
-                    <form onSubmit={() => {
-                            handleSubmit()
-                            setOpen(false)
-                        }}
-                    >
+                    <form onSubmit={handleFormSubmit}>
                         { props.content }
                         <div className="flex flex-col-reverse md:flex-row justify-end gap-2 mt-8">
                             <button
-                                onClick={() => {
-                                    if (props.cannel.action != undefined || props.cannel.action != null) {
-                                        props.cannel.action()
-                                    }
-                                    setOpen(false)
-                                }}
-                                className="w-full px-4 py-2 bg-black text-white rounded-lg"
+                                onClick={() => setOpen(false)}
+                                className="cursor-pointer w-full px-4 py-2 bg-black text-white rounded-lg"
                             >
-                                { props.cannel.name }
+                                { props.cannel }
                             </button>
 
                             <button
                                 type="submit"
-                                className="w-full px-4 py-2 border rounded-lg"
+                                className="cursor-pointer w-full px-4 py-2 border rounded-lg"
                             >
                                 { props.submit.name }
                             </button>
