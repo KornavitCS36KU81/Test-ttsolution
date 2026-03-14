@@ -7,12 +7,11 @@ import { ChangeType } from "@/types/todo";
 
 export default function Button() {
     const context = useContext(TodoContext);
-    const props = context;
 
     const { register, handleSubmit, reset } = useForm<ChangeType>();
 
-    const onSubmit = (data: ChangeType) => {
-        props?.addTodo(data)
+    const onAdd = (data: ChangeType) => {
+        context?.addTodo(data)
         reset();
     };
 
@@ -35,7 +34,7 @@ export default function Button() {
             }
             submit={{
                 name: "บันทึก",
-                action: handleSubmit(onSubmit)
+                action: handleSubmit(onAdd)
             }}
             cannel="ยกเลิก"
         >

@@ -12,15 +12,13 @@ export default function Card({ id, title, description, time, finish }:TodoType) 
 
   const { register, handleSubmit, reset } = useForm<ChangeType>();
 
-  const props = context;
-
-  const onSubmit = (data: ChangeType) => {
-    props?.editTodo(id, data)
+  const onEdit = (data: ChangeType) => {
+    context?.editTodo(id, data)
     reset();
   };
   
   const onDelete = () => {
-    props?.deleteTodo(id)
+    context?.deleteTodo(id)
   }
 
   return (
@@ -49,7 +47,7 @@ export default function Card({ id, title, description, time, finish }:TodoType) 
             }
             submit={{
               name: "อัพเดท",
-              action: handleSubmit(onSubmit)
+              action: handleSubmit(onEdit)
             }}
             cannel="ยกเลิก"
           >
@@ -66,7 +64,7 @@ export default function Card({ id, title, description, time, finish }:TodoType) 
           <p className="flex-1 self-center">{time.toLocaleString()}</p>
           <div className={`${finish ? "bg-green-200 text-green-500" : "bg-red-200 text-red-500"} flex space-x-1 py-1.5 px-1.5 rounded-lg min-w-fit`}>
             { finish ? <BadgeCheck /> : <CircleX /> }
-            <span className="text-sm font-medium self-center">{finish ? "Done" : "Not Done"}</span>
+            <span className="text-sm font-medium self-center">{finish ? "เสร็จแล้ว" : "ยังไม่เสร็จ"}</span>
           </div>
 
           <div className="flex items-center pl-4">
@@ -75,7 +73,7 @@ export default function Card({ id, title, description, time, finish }:TodoType) 
                 type="checkbox"
                 checked={finish}
                 className="peer sr-only"
-                onChange={() => props?.toggleTodo(id)}
+                onChange={() => context?.toggleTodo(id)}
               />
               <span className="absolute inset-0 bg-gray-400 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-black peer-disabled:opacity-50 peer-disabled:pointer-events-none"></span>
               <span className="absolute top-1/2 inset-s-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-full"></span>
