@@ -14,11 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <TodoProvider>
-        <body className="m-8 bg-gray-100">
+      <body className="m-8 bg-gray-100">
+        <TodoProvider>
           {children}
-        </body>
-      </TodoProvider>
+        </TodoProvider>
+      </body>
     </html>
   );
 }

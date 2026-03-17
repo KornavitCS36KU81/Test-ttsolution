@@ -2,9 +2,17 @@
 import { useState, useEffect } from "react"
 import { TodoContext } from "@/context/TodoContext"
 import { TodoType, ChangeType } from "@/types/todo";
+import Skeleton from "@/components/skeleton";
+
+import { format } from "date-fns"
+import { th } from "date-fns/locale";
+
+const delay = (ms: number) =>
+  new Promise(resolve => setTimeout(resolve, ms))
 
 export function TodoProvider({ children }: { children: React.ReactNode }) {
     const [tasks, setTasks] = useState<TodoType[]>([])
+    const [loading, setLoading] = useState(true)
   
     const toggleTodo = (id: number) => {
       setTasks(tasks =>
@@ -23,7 +31,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
             id: 1,
             title: task.title,
             description: task.description,
-            time: new Date(),
+            time: format(new Date(), 'd MMMM yyyy HH:mm', { locale: th }),
             finish: false
           }]
         }
@@ -32,7 +40,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
             id: oldTask[oldTask.length - 1].id + 1,
             title: task.title,
             description: task.description,
-            time: new Date(),
+            time: format(new Date(), 'd MMMM yyyy HH:mm', { locale: th }),
             finish: false
           }
         ]
@@ -62,10 +70,16 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
       fetch("/api/todo")
         .then(response => response.json())
-        .then((result: TodoType[]) => {
-          setTasks(result);
+        .then(async (result: TodoType[]) => {
+          await delay(1500)
+          setTasks(result)
+          setLoading(false)
         });
     }, []);
+
+    if (loading) {
+      return <Skeleton />
+    }
   
     return (
       <TodoContext.Provider value={{ tasks, addTodo, editTodo, deleteTodo, toggleTodo }}>

@@ -27,10 +27,11 @@ export default function Home() {
     const filter = value.filter(task => task.finish == finish)
     return (
       <>
-        <p className="font-bold tracking-wide">
-
-          { filter.length ? finish ? "ทำเสร็จแล้ว": "ทำยังไม่เสร็จ" : <></> }
-        </p>
+        { 
+          filter.length ? 
+            finish ? <p className="font-bold tracking-wide">ทำเสร็จแล้ว</p> : <p className="font-bold tracking-wide">ทำยังไม่เสร็จ</p> 
+          : <></> 
+        }
         {
           filter.map((task) => (
             <Card 
@@ -70,12 +71,14 @@ export default function Home() {
     }
 
     // ไม่มีการ search
-    return (<>
-      { showEachCard(tasks, false) }
-      { showEachCard(tasks, true) }
-    </>)
+    return (
+      <>
+        { showEachCard(tasks, false) }
+        { showEachCard(tasks, true) }
+      </>
+    )
   }
-  
+
   return (
     <main className="space-y-8">
       <h1 className="text-3xl font-bold">{ tasks.length ? "รายการที่คุณต้องทำ" : "เพิ่มรายการที่คุณต้องทำผ่าน ปุ่มด้านล่างเลย"}</h1>
@@ -85,13 +88,13 @@ export default function Home() {
             <section className="md:flex md:justify-between space-y-4 md:space-y-0">
               <div className="flex">
                 <div className="relative flex items-center w-full">
-                    <Search className="absolute w-5 h-5 top-2.5 left-2.5 text-slate-600"/>
-                    <input 
-                      className="[&::-webkit-search-cancel-button]:hidden [&::-ms-clear]:hidden w-full rounded-lg border border-gray-300 pl-10 pr-3 py-2 text-md focus:outline-none" 
-                      placeholder="ค้นหางานของคุณ..."
-                      value={keyword} 
-                      onChange={(event) => setKeyword(event.target.value)}  
-                    />
+                  <Search className="absolute w-5 h-5 top-2.5 left-2.5 text-slate-600"/>
+                  <input 
+                    className="[&::-webkit-search-cancel-button]:hidden [&::-ms-clear]:hidden w-full rounded-lg border border-gray-300 pl-10 pr-3 py-2 text-md focus:outline-none" 
+                    placeholder="ค้นหางานของคุณ..."
+                    value={keyword} 
+                    onChange={(event) => setKeyword(event.target.value)}  
+                  />
                 </div>
               </div>
               <Button />
@@ -102,7 +105,7 @@ export default function Home() {
           </>
         ) : (
           <div className="flex flex-col space-y-4 items-center justify-center h-[80vh]">
-            <ListTodo />
+            <ListTodo className="size-16"/>
             <p>ไม่มีรายการที่คุณต้องทำหรอ</p>
             <Button />
           </div>
