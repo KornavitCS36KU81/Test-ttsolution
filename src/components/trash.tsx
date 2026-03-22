@@ -1,15 +1,11 @@
-import { useState, useContext } from "react";
-import { TodoContext } from "@/context/TodoContext"
+import { useState } from "react";
+import { useTodo } from "@/context/TodoContext"
 
 import { Trash2 } from "lucide-react"
 import Dialog from "@/components/dialog";
 
-type DeleteIdtype = {
-    id: number
-}
-
-export default function Trash({id}: DeleteIdtype) {
-    const context = useContext(TodoContext);
+export default function Trash({id}: {id: number}) {
+    const { deleteTodo } = useTodo();
 
     const [open, setOpen] = useState(false);
 
@@ -18,7 +14,8 @@ export default function Trash({id}: DeleteIdtype) {
     }
 
     const onDelete = () => {
-      context?.deleteTodo(id)
+      deleteTodo(id)
+      closeDialog()
     }
     
     return (

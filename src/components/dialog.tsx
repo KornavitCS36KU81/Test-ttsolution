@@ -24,7 +24,7 @@ export default function Dialog({children, isOpen}:DialogComponent) {
     return (
         <>
             {isOpen && (
-                <div className="z-10 fixed inset-0 flex items-center justify-center">
+                <div className="z-10 fixed inset-0 flex items-end md:items-center justify-center">
                     {/* Overlay */}
                     <div
                         className={`fixed inset-0 bg-black/50 transition-opacity duration-300 ${
@@ -34,8 +34,8 @@ export default function Dialog({children, isOpen}:DialogComponent) {
 
                     {/* Modal content */}
                     <div
-                        className={`relative bg-white rounded-xl shadow-lg w-100 p-6 transform transition-all duration-300
-                        ${show ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+                        className={`relative bg-white rounded-t-xl md:rounded-xl shadow-lg w-screen md:w-3/6 p-4 transform transition-all duration-300
+                        ${show ? "opacity-100 translate-y-0 md:translate-none md:scale-100" : "opacity-0 translate-y-full md:translate-none md:scale-95"}`}
                     >
                         { children }
                     </div>

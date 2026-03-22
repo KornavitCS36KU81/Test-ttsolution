@@ -2,26 +2,28 @@
 
 import Card from "@/components/card";
 import Button from "@/components/button";
+import { ChartPie } from 'lucide-react';
+
 import { Search, SearchAlert } from 'lucide-react';
-import { useContext, useState, useMemo } from "react";
-import { TodoContext } from "@/context/TodoContext"
+import { useState, useMemo } from "react";
+import Link from 'next/link'
+import { useTodo } from "@/context/TodoContext"
 
 import { ListTodo } from 'lucide-react';
 import { TodoType } from "@/types/todo";
 
 export default function Home() {
-  const context = useContext(TodoContext);
-  const tasks = context?.tasks ? context.tasks: [];
+  const { tasks } = useTodo();
   const [keyword, setKeyword] = useState('')
 
   const searchTodo = useMemo(() => {
     const search = keyword.toLowerCase()
 
-    return context?.tasks.filter((todo) =>
+    return tasks.filter((todo) =>
       todo.title.toLowerCase().includes(search) ||
       todo.description.toLowerCase().includes(search)
     )
-  }, [context?.tasks, keyword])
+  }, [tasks, keyword])
 
   function showEachCard(value: TodoType[], finish: boolean) {
     const filter = value.filter(task => task.finish == finish)
@@ -34,14 +36,7 @@ export default function Home() {
         }
         {
           filter.map((task) => (
-            <Card 
-              key={task.id}
-              id={task.id}
-              description={task.description}
-              title={task.title}
-              time={task.time}
-              finish={task.finish}
-            />
+            <Card key={task.id} props={task}/>
           ))
         }
       </>
@@ -81,7 +76,16 @@ export default function Home() {
 
   return (
     <main className="space-y-8">
-      <h1 className="text-3xl font-bold">{ tasks.length ? "รายการที่คุณต้องทำ" : "เพิ่มรายการที่คุณต้องทำผ่าน ปุ่มด้านล่างเลย"}</h1>
+      <section className="flex items-center">
+        <h1 className="text-3xl font-bold flex-1">{ tasks.length ? "รายการที่คุณต้องทำ" : "เพิ่มรายการที่คุณต้องทำผ่าน ปุ่มด้านล่างเลย"}</h1>
+        { 
+          tasks.length ? (
+            <Link href="/summarize" className="cursor-pointer border rounded-xl p-1">
+              <ChartPie />
+            </Link>
+          ) : <></>
+        }
+      </section>
       {
         tasks.length ? (
           <>

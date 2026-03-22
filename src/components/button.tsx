@@ -1,12 +1,12 @@
-import { useState, useContext } from "react";
-import { TodoContext } from "@/context/TodoContext"
+import { useState } from "react";
+import { useTodo } from "@/context/TodoContext"
 
 import Dialog from "@/components/dialog";
 import { useForm } from "react-hook-form";
 import { ChangeType } from "@/types/todo";
 
 export default function Button() {
-    const context = useContext(TodoContext);
+    const { addTodo } = useTodo();
     const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm<ChangeType>({ mode: "onChange" });
     
     const [open, setOpen] = useState(false);
@@ -18,7 +18,7 @@ export default function Button() {
 
     const onAdd = (data: ChangeType) => {
         if (isValid) {
-            context?.addTodo(data)
+            addTodo(data)
             closeDialog()
         }
     };
@@ -31,7 +31,7 @@ export default function Button() {
                     <label className="block mb-2.5 text-xl font-bold">ชื่อหัวข้อ</label>
                     <input 
                         {...register("title", { required: "กรุณาใส่ชื่อหัวข้อ" })}
-                        className={`border ${errors.title?.message && ("border-red-500")} text-base rounded-base block w-full px-4 py-3.5`}
+                        className={`border ${errors.title?.message && ("border-red-500 outline-red-500")} text-base rounded-xl block w-full px-4 py-3.5`}
                     />
                     { errors.title && (
                         <p className="text-red-500 text-xs">
@@ -41,7 +41,7 @@ export default function Button() {
                     <label className="block mb-2.5 text-xl font-bold">รายละเอียดของงาน</label>
                     <textarea
                         {...register("description", { required: "กรุณาใส่เนื้อหา" })}
-                        className={`bg-gray-200 border border-gray-200 ${errors.description?.message && ("border-red-500")} text-base rounded-base block w-full px-2 py-1.5`}
+                        className={`overflow-auto bg-gray-200 border border-gray-200 ${errors.description?.message && ("border-red-500 outline-red-500")} text-base rounded-xl block w-full p-4 min-h-[40vh] md:min-h-[50vh]`}
                     />
                     { errors.description && (
                         <p className="text-red-500 text-xs">

@@ -2,7 +2,8 @@ export type TodoType = {
     id: number
     title: string
     description: string
-    time: string
+    startTime: string
+    finishTime: string | null
     finish: boolean
 }
 

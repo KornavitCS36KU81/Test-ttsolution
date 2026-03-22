@@ -4,7 +4,17 @@ import { TodoContext } from "@/context/TodoContext"
 import { TodoType, ChangeType } from "@/types/todo";
 import Skeleton from "@/components/skeleton";
 
-import { format } from "date-fns"
+import { 
+  format, 
+  parse, 
+  differenceInYears, 
+  differenceInMonths, 
+  differenceInDays, 
+  differenceInHours, 
+  differenceInMinutes,
+  differenceInSeconds
+} from "date-fns"
+
 import { th } from "date-fns/locale";
 
 const delay = (ms: number) =>
@@ -13,12 +23,38 @@ const delay = (ms: number) =>
 export function TodoProvider({ children }: { children: React.ReactNode }) {
     const [tasks, setTasks] = useState<TodoType[]>([])
     const [loading, setLoading] = useState(true)
-  
+    
+    function setfinalTime(startTime: string, finish: boolean) {
+      if (!finish) {
+        const finishTime = new Date();
+        const startObject = parse(
+          startTime, 
+          'd MMMM yyyy เวลา HH:mm', 
+          new Date(), 
+          { locale: th }
+        );
+        if (differenceInYears(finishTime, startObject)) {
+          return differenceInYears(finishTime, startObject) + " ปี";
+        } else if (differenceInMonths(finishTime, startObject)) {
+          return differenceInMonths(finishTime, startObject) + " เดือน";
+        } else if (differenceInDays(finishTime, startObject)) {
+          return differenceInDays(finishTime, startObject) + " วัน";
+        } else if (differenceInHours(finishTime, startObject)) {
+          return differenceInHours(finishTime, startObject) + " ชั่วโมง";
+        } else if (differenceInMinutes(finishTime, startObject)) {
+          return differenceInMinutes(finishTime, startObject) + " นาที";
+        }
+        return differenceInSeconds(finishTime, startObject) + " วินาที"
+      }
+      return null
+    }
+
+
     const toggleTodo = (id: number) => {
       setTasks(tasks =>
         tasks.map(todo =>
           todo.id === id
-            ? { ...todo, finish: !todo.finish }
+            ? { ...todo, finishTime: setfinalTime(todo.startTime, todo.finish) ,finish: !todo.finish }
             : todo
         )
       )
@@ -31,7 +67,8 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
             id: 1,
             title: task.title,
             description: task.description,
-            time: format(new Date(), 'd MMMM yyyy HH:mm', { locale: th }),
+            startTime: format(new Date(), 'd MMMM yyyy เวลา HH:mm', { locale: th }),
+            finishTime: null,
             finish: false
           }]
         }
@@ -40,7 +77,8 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
             id: oldTask[oldTask.length - 1].id + 1,
             title: task.title,
             description: task.description,
-            time: format(new Date(), 'd MMMM yyyy HH:mm', { locale: th }),
+            startTime: format(new Date(), 'd MMMM yyyy เวลา HH:mm', { locale: th }),
+            finishTime: null,
             finish: false
           }
         ]

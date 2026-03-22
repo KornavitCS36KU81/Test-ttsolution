@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import type { TodoType, ChangeType } from "@/types/todo";
 
 type TodoContextType = {
@@ -10,3 +10,9 @@ type TodoContextType = {
 };
 
 export const TodoContext = createContext<TodoContextType | null>(null);
+
+export const useTodo = () => {
+  const context = useContext(TodoContext);
+  if (!context) throw new Error("Todo tag must be used within TodoProvider");
+  return context;
+}
