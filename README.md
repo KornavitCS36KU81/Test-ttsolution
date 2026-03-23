@@ -87,6 +87,7 @@ npm run dev
 
 - mobile จะเลื่อนขึ้นมาจากด้านล่างของจอ
 <br/>
+
 ![](./image/dialog_component_mobile.png)
 
 ### แก้ไขข้อมูล
