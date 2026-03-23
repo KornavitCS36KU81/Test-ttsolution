@@ -62,19 +62,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
   
     const addTodo = (task: ChangeType) => {
       setTasks((oldTask) => {
-        if (oldTask.length == 0) {
-          return [{
-            id: 1,
-            title: task.title,
-            description: task.description,
-            startTime: format(new Date(), 'd MMMM yyyy เวลา HH:mm', { locale: th }),
-            finishTime: null,
-            finish: false
-          }]
-        }
         return [...oldTask, 
           {
-            id: oldTask[oldTask.length - 1].id + 1,
+            id: oldTask.length ? oldTask.length + 1 : 1,
             title: task.title,
             description: task.description,
             startTime: format(new Date(), 'd MMMM yyyy เวลา HH:mm', { locale: th }),
