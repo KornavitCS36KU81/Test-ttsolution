@@ -45,7 +45,6 @@ npm run dev
 
 - mobile
 <br/>
-
 ![](./image/state_mobile.png)
 
 มีสามารถทำได้ดังนี้
@@ -86,6 +85,7 @@ npm run dev
 ![](./image/dialog_component_desktop.png)
 
 - mobile จะเลื่อนขึ้นมาจากด้านล่างของจอ
+<br/>
 ![](./image/dialog_component_mobile.png)
 
 ### แก้ไขข้อมูล
